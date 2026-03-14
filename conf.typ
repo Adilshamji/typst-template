@@ -1,4 +1,5 @@
-// New computer modern
+// conf.typ
+
 #let language = (
   "en": (
     email: "E-mail",
@@ -6,6 +7,7 @@
     section: "Section",
     figure: "Figure",
     table: "Table",
+    version: "Version",
   ),
   "sv": (
     email: "E-post",
@@ -13,36 +15,78 @@
     section: "Avsnitt",
     figure: "Figur",
     table: "Tabell",
+    version: "Version",
   ),
 )
 
 #let conf(
   title: [Report Title],
-  author: (name: "Adil Shamji", email: "adil02.shamji@gmail.com"),
+  author: (
+    name: "Adil Shamji",
+    email: "adil02.shamji@gmail.com",
+    affiliation: "Linköping University",
+  ),
+  date: datetime.today(),
+  version: "0.1",
   lang: "en",
   rectangle_color: black,
   doc,
 ) = {
   let t = language.at(lang, default: language.at("en"))
+  let affiliation = author.at("affiliation", default: "")
+  let email = author.at("email", default: none)
 
   set page(
     paper: "a4",
-    margin: (x: 2.5cm, y: 3cm), numbering: "1"
+    margin: (x: 2.5cm, y: 3cm),
+    numbering: "1",
+    header-ascent: 25%,
+    header: context if here().page() > 1 [
+      #set text(size: 9pt)
+      #author.name
+      #h(1fr)
+      #title
+      #line(length: 100%, stroke: 0.4pt)
+    ],
   )
+
   set text(
     font: "New Computer Modern",
-    lang: lang, 
+    lang: lang,
+    size: 11pt,
   )
-   set par(
+
+  set par(
     first-line-indent: 0em,
     spacing: 1.4em,
     justify: true,
     leading: 0.7em,
   )
 
-// https://github.com/coli-saar/bananote/blob/main/lib.typ
-set heading(numbering: "1.1 ")
-let heading_size = 12pt
+  if title != none {
+    text(size: 20pt, weight: "bold", title)
+    v(0.45em)
+
+    grid(
+      columns: (1fr, auto),
+      column-gutter: 1.5em,
+      row-gutter: 0.3em,
+
+      text(weight: "bold", author.name),
+      date.display("[day] [month repr:long] [year]"),
+
+      if affiliation != "" { affiliation } else { [] },
+      if version != none { [#t.version #version] } else { [] },
+
+      if email != none { [#t.email: #email] } else { [] },
+      [],
+    )
+
+    v(0.3em)
+  }
+
+  set heading(numbering: "1.1")
+  let heading_size = 12pt
 
 show heading.where(level: 1): it => {
   v(2em, weak: true)
@@ -53,18 +97,17 @@ show heading.where(level: 1): it => {
         #context {
           align(right)[
             #box(fill: rectangle_color, width: 1em, height: 1em)[
-              #if it.numbering != none {
-                align(center + horizon)[
-                  #text(
-                    font: "New Computer Modern Sans",
-                    weight: 800,
+              #if it.numbering != none [
+                #align(center + horizon)[
+                  #set text(
+                    font: "New Computer Modern",
+                    weight: "bold",
                     size: heading_size,
                     fill: white,
-                  )[
-                    #counter(heading).get().first()
-                  ]
+                  )
+                  #counter(heading).get().first()
                 ]
-              }
+              ]
             ]
           ]
         }
@@ -72,12 +115,10 @@ show heading.where(level: 1): it => {
     ]
 
     #it.body
-    ]
-  }
-  if title != none {
-    align(Left, text(size: 22pt, weight: "bold", title))
-    v(1em)
-  }
+  ]
+}  
+  show heading.where(level: 2): set text(weight: "bold", size: 12pt)
+  show heading.where(level: 2): set block(above: 1.4em, below: 0.8em)
+
   doc
 }
-  

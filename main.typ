@@ -4,13 +4,14 @@
   title: [My Research Note],
   author: (
     name: "Adil Shamji",
-    affiliation: "Linköping University",
     email: "adil02.shamji@gmail.com",
+    affiliation: "Linköping University",
   ),
+  version: "0.1",
   lang: "en",
-  rectangle_color: black,
+  rectangle_color: green,
 )
-
+#pagebreak()
 = First heading
 
 Some text here.
