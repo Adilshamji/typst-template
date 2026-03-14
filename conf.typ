@@ -100,7 +100,7 @@
 
     v(0.3em)
   }
-
+ // I have taken the rectangle implementation from https://github.com/coli-saar/bananote/blob/main/main.typ
   set heading(numbering: "1.1")
   let heading_size = 12pt
 
