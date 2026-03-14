@@ -13,9 +13,9 @@
 )
 #pagebreak()
 = First heading
-
+#lorem(100)
 Some text here.
 
 == Second heading
-
+#lorem(100)
 More text here.

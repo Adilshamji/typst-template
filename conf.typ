@@ -44,18 +44,26 @@
     header-ascent: 25%,
     header: context if here().page() > 1 [
       #set text(size: 9pt)
-
       #grid(
         columns: (1fr, auto),
         column-gutter: 1em,
-        row-gutter: 0.25em,
-        [#author.name], [#align(right)[#title]],
-        [#affiliation], [#align(right)[#version]],
-      )
-
-      #v(-0.2em)
-      #line(length: 100%, stroke: 0.4pt)
-    ],
+        [
+          #author.name
+          #linebreak()
+          #affiliation
+        ],
+        [
+          #align(right, block[
+            #set align(left)
+            #title
+            #linebreak()
+            #version
+          ])
+        ],
+  )
+  #v(-0.5em)
+  #line(length: 100%, stroke: 0.4pt)
+]
   )
 
   set text(
@@ -72,7 +80,7 @@
   )
 
   if title != none {
-    text(size: 20pt, weight: "bold", title)
+    text(size: 20pt, weight: "regular", title)
     v(0.45em)
 
     grid(
