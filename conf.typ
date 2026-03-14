@@ -35,6 +35,7 @@
   let t = language.at(lang, default: language.at("en"))
   let affiliation = author.at("affiliation", default: "")
   let email = author.at("email", default: none)
+  
 
   set page(
     paper: "a4",
@@ -43,9 +44,16 @@
     header-ascent: 25%,
     header: context if here().page() > 1 [
       #set text(size: 9pt)
-      #author.name
-      #h(1fr)
-      #title
+
+      #grid(
+        columns: (1fr, auto),
+        column-gutter: 1em,
+        row-gutter: 0.25em,
+        [#author.name], [#align(right)[#title]],
+        [#affiliation], [#align(right)[#version]],
+      )
+
+      #v(-0.2em)
       #line(length: 100%, stroke: 0.4pt)
     ],
   )
